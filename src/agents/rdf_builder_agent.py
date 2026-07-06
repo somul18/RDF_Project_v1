@@ -172,19 +172,30 @@ class RDFBuilderAgent:
         entities: List[ExtractedEntity],
         relations: List[ExtractedRelation],
         toolbox: GraphToolbox,
-        graph_id: str = "generated"
+        graph_id: str = "generated",
+        critic_feedback: Optional[List[str]] = None
     ) -> str:
-        """Construct the RDF graph by executing backend tool functions based on extracted data."""
+        """Construct the RDF graph by executing backend tool functions based on extracted data and critic feedback."""
         
         entities_data = "\n".join([f"- ID: {e.id}, Label: {e.label}, Type: {e.type}" for e in entities])
         relations_data = "\n".join([f"- Subject: {r.subject}, Predicate: {r.predicate}, Object: {r.object}" for r in relations])
         
+        feedback_prompt = ""
+        if critic_feedback:
+            feedback_str = "\n".join([f"- {fb}" for fb in critic_feedback])
+            feedback_prompt = f"""
+            CRITICAL FEEDBACK FOR CORRECTION:
+            A Critic Agent reviewed your previous graph and identified these issues.
+            You MUST fix these by calling the appropriate tools (e.g. `add_literal` with explicit datatypes, `add_triple`, etc.):
+            {feedback_str}
+            """
+
         system_instruction = """
         You are an expert RDF Graph Builder Agent.
-        Your goal is to build an RDF graph using the provided toolbox tools.
+        Your goal is to build or correct an RDF graph using the provided toolbox tools.
         
         Follow these steps:
-        1. Initialize the graph using `create_graph`.
+        1. Initialize the graph using `create_graph` (if it does not exist yet. If it already exists, do NOT call create_graph).
         2. Map the extracted entities to appropriate standard classes (using `add_type`):
            - Use standard prefixes where appropriate: foaf:Person, schema:Place, schema:Event, etc.
            - Prepend 'ex:' to local entity resource IDs (e.g., entity ID 'Marie_Curie' becomes 'ex:Marie_Curie').
@@ -195,7 +206,9 @@ class RDFBuilderAgent:
         
         prompt = f"""
         Here is the extracted entity and relation data.
-        Please construct the graph '{graph_id}' using the tools.
+        Please construct or modify the graph '{graph_id}' using the tools.
+        
+        {feedback_prompt}
         
         Entities:
         {entities_data}

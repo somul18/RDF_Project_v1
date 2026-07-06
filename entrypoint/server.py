@@ -372,12 +372,14 @@ def run_agent_workflow(req: AgentWorkflowRequest):
         from agents.extractor_agent import EntityExtractorAgent, RelationExtractorAgent
         from agents.rdf_builder_agent import RDFBuilderAgent
         from agents.validator_agent import ValidatorAgent
+        from agents.critic_agent import CriticAgent
         
         workflow = RDFGraphWorkflow(
             EntityExtractorAgent(),
             RelationExtractorAgent(),
             RDFBuilderAgent(),
-            ValidatorAgent()
+            ValidatorAgent(),
+            CriticAgent()
         )
         
         res = workflow.run(req.text)

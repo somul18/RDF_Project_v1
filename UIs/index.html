@@ -523,6 +523,11 @@
                     <div class="step-icon">3</div>
                     Validation
                 </div>
+                <div class="arrow">➔</div>
+                <div class="step" id="step-critic">
+                    <div class="step-icon">4</div>
+                    Critic Review
+                </div>
             </div>
 
             <!-- Tabs -->
@@ -530,6 +535,7 @@
                 <button class="tab-btn active" onclick="switchTab('tab-graph')">RDF Graph (Turtle)</button>
                 <button class="tab-btn" onclick="switchTab('tab-extractions')">Extracted Triples</button>
                 <button class="tab-btn" onclick="switchTab('tab-toolbox')">Toolbox Logs</button>
+                <button class="tab-btn" onclick="switchTab('tab-critic')">Critic Review</button>
                 <button class="tab-btn" onclick="switchTab('tab-validation')">Validation Report</button>
             </div>
 
@@ -575,6 +581,28 @@
                         <ul id="toolbox-logs-list" style="list-style: none; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.6; color: #34d399; display: flex; flex-direction: column; gap: 0.5rem;">
                         </ul>
                     </div>
+                </div>
+            </div>
+
+            <!-- Tab: Critic Review -->
+            <div class="tab-content" id="tab-critic">
+                <div id="critic-placeholder" class="placeholder-text">Run the pipeline to trigger the Critic Agent and self-correction loop...</div>
+                <div id="critic-result" style="display: none;">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="validation-badge" id="critic-approval-badge"></div>
+                        <div style="font-size: 0.95rem; font-weight: 500; color: var(--text-secondary);">
+                            Overall Confidence: <span id="critic-confidence-score" style="color: var(--text-primary); font-weight: 600;"></span>
+                        </div>
+                    </div>
+                    
+                    <h3 style="font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.25rem;">Self-Correction Timeline</h3>
+                    <div id="correction-timeline" style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;"></div>
+
+                    <h3 style="font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.25rem;">Critic Aspect Evaluations</h3>
+                    <div id="critic-evaluations-container" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;"></div>
+
+                    <h3 style="font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.25rem;">Critic Actionable Recommendations</h3>
+                    <div id="critic-recommendations-container" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
                 </div>
             </div>
 
@@ -666,9 +694,14 @@
                     
                     setTimeout(() => {
                         setStepSuccess('step-validate');
-                        displayResults(result);
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = 'Run Agent Pipeline';
+                        setStepActive('step-critic');
+                        
+                        setTimeout(() => {
+                            setStepSuccess('step-critic');
+                            displayResults(result);
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = 'Run Agent Pipeline';
+                        }, 500);
                     }, 500);
                 }, 500);
 
@@ -700,12 +733,14 @@
             document.getElementById('graph-result').style.display = 'none';
             document.getElementById('extractions-result').style.display = 'none';
             document.getElementById('toolbox-result').style.display = 'none';
+            document.getElementById('critic-result').style.display = 'none';
             document.getElementById('validation-result').style.display = 'none';
 
             // Show placeholders
             document.getElementById('graph-placeholder').style.display = 'block';
             document.getElementById('extractions-placeholder').style.display = 'block';
             document.getElementById('toolbox-placeholder').style.display = 'block';
+            document.getElementById('critic-placeholder').style.display = 'block';
             document.getElementById('validation-placeholder').style.display = 'block';
         }
 
@@ -714,6 +749,7 @@
             document.getElementById('graph-placeholder').style.display = 'none';
             document.getElementById('extractions-placeholder').style.display = 'none';
             document.getElementById('toolbox-placeholder').style.display = 'none';
+            document.getElementById('critic-placeholder').style.display = 'none';
             document.getElementById('validation-placeholder').style.display = 'none';
 
             // 1. Display Turtle Graph
@@ -750,7 +786,75 @@
             });
             document.getElementById('toolbox-result').style.display = 'block';
 
-            // 4. Display Validation Results
+            // 4. Display Critic Results
+            const criticApprovalBadge = document.getElementById('critic-approval-badge');
+            const criticConfidence = document.getElementById('critic-confidence-score');
+            criticConfidence.innerText = (data.critic.overall_confidence * 100).toFixed(0) + '%';
+            
+            if (data.critic.is_approved) {
+                criticApprovalBadge.className = 'validation-badge valid';
+                criticApprovalBadge.innerText = '✓ Approved by Critic';
+            } else {
+                criticApprovalBadge.className = 'validation-badge invalid';
+                criticApprovalBadge.innerText = '✗ Needs Correction';
+            }
+
+            // Timeline
+            const timeline = document.getElementById('correction-timeline');
+            timeline.innerHTML = '';
+            data.loop_history.forEach(iter => {
+                const item = document.createElement('div');
+                item.className = 'issue-card';
+                item.style.borderLeft = iter.is_approved ? '4px solid var(--success-color)' : '4px solid var(--warning-color)';
+                item.innerHTML = `
+                    <div style="font-weight: 600; display: flex; justify-content: space-between;">
+                        <span>📍 ${iter.iteration}</span>
+                        <span style="color: ${iter.is_approved ? 'var(--success-color)' : 'var(--warning-color)'}">
+                            ${iter.is_approved ? 'Approved' : 'Correction Feedback Sent'} (Confidence: ${(iter.confidence * 100).toFixed(0)}%)
+                        </span>
+                    </div>
+                    <div style="font-family: monospace; font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                        Recommendations: ${iter.critic_recommendations.length + iter.validation_issues.length}
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+
+            // Evaluations
+            const evalsContainer = document.getElementById('critic-evaluations-container');
+            evalsContainer.innerHTML = '';
+            data.critic.evaluations.forEach(ev => {
+                const card = document.createElement('div');
+                card.className = 'issue-card';
+                card.style.borderLeft = ev.passed ? '4px solid var(--success-color)' : '4px solid var(--error-color)';
+                card.innerHTML = `
+                    <div style="font-weight: 600; color: ${ev.passed ? '#34d399' : '#f87171'};">${ev.aspect} (${ev.passed ? 'PASSED' : 'FAILED'})</div>
+                    <div style="margin-top: 0.25rem; font-size: 0.85rem;">${ev.details}</div>
+                `;
+                evalsContainer.appendChild(card);
+            });
+
+            // Recommendations
+            const recsContainer = document.getElementById('critic-recommendations-container');
+            recsContainer.innerHTML = '';
+            if (data.critic.recommendations.length === 0) {
+                recsContainer.innerHTML = '<div style="font-style: italic; color: var(--text-secondary); font-size: 0.85rem;">No recommendations (Graph fully approved).</div>';
+            } else {
+                data.critic.recommendations.forEach(rec => {
+                    const card = document.createElement('div');
+                    card.className = 'issue-card';
+                    card.style.background = 'rgba(59, 130, 246, 0.05)';
+                    card.style.border = '1px solid rgba(59, 130, 246, 0.15)';
+                    card.innerHTML = `
+                        <div style="font-weight: 600; color: #60a5fa;">Issue: ${rec.issue}</div>
+                        <div style="margin-top: 0.25rem; font-size: 0.85rem; font-weight: 500;">Action: <code style="font-family: 'Fira Code', monospace; background: rgba(0,0,0,0.2); padding: 0.1rem 0.3rem; border-radius: 4px;">${rec.action}</code></div>
+                    `;
+                    recsContainer.appendChild(card);
+                });
+            }
+            document.getElementById('critic-result').style.display = 'block';
+
+            // 5. Display Validation Results
             const validBadge = document.getElementById('valid-badge');
             const invalidBadge = document.getElementById('invalid-badge');
             const issuesList = document.getElementById('issues-list');
