@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDF 1.1 Multi-Agent Pipeline Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 25, 40, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-primary: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.35);
+            --success-color: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.2);
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 900px) {
+            main {
+                grid-template-columns: 450px 1fr;
+            }
+        }
+
+        /* Glass Card Base */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Input Card Styling */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .sample-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sample-chips p {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .chip {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .chip:hover {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px var(--accent-glow);
+            transition: transform 0.1s, box-shadow 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            background: #272e3f;
+            color: #6b7280;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Results / Workflow Card */
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Workflow Visual */
+        .workflow-visual {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 0.5rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            opacity: 0.4;
+            transition: opacity 0.3s, color 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+
+        .step.active.success {
+            color: var(--success-color);
+        }
+
+        .step-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .step.active .step-icon {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 8px var(--accent-glow);
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .step.active.success .step-icon {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--success-color);
+            box-shadow: 0 0 8px var(--success-glow);
+            animation: none;
+        }
+
+        .arrow {
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 1.25rem;
+        }
+
+        /* Tab Layout */
+        .tabs-header {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            box-shadow: none;
+            width: auto;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.03);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Extraction UI Elements */
+        .entities-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .entity-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .entity-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .entity-type {
+            font-size: 0.7rem;
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .relations-table-container {
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        /* Code Block Container */
+        .code-container {
+            position: relative;
+            background: #050811;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        pre {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: auto;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        /* Validation UI Elements */
+        .validation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .validation-badge.valid {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .validation-badge.invalid {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .issue-card {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            border-radius: 8px;
+            padding: 0.85rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .issue-title {
+            font-weight: 600;
+            color: #f87171;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Spinner / Loader */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border-left-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            from { box-shadow: 0 0 4px var(--accent-glow); }
+            to { box-shadow: 0 0 16px var(--accent-primary); }
+        }
+
+        .placeholder-text {
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 3rem 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RDF 1.1 Multi-Agent Pipeline</h1>
+        <p>Convert unstructured text into clean, validated, semantic RDF graphs using collaborative AI agents.</p>
+    </header>
+
+    <main>
+        <!-- Left: Inputs -->
+        <div class="glass-card input-section">
+            <h2 class="section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Input Text
+            </h2>
+            <textarea id="text-input" placeholder="Type or paste unstructured text to parse..."></textarea>
+            
+            <div class="sample-chips">
+                <p>Sample Prompts</p>
+                <button class="chip" onclick="useSample(this)">Marie Curie was born in Warsaw in 1867.</button>
+                <button class="chip" onclick="useSample(this)">Albert Einstein was born in Ulm, Germany, in 1879, and died in Princeton in 1955.</button>
+                <button class="chip" onclick="useSample(this)">Google was founded by Larry Page and Sergey Brin in 1998, and is headquartered in Mountain View.</button>
+            </div>
+
+            <button id="submit-btn" onclick="runWorkflow()">
+                <span>Run Agent Pipeline</span>
+            </button>
+        </div>
+
+        <!-- Right: Results & Steps -->
+        <div class="glass-card results-section">
+            <h2 class="section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Pipeline Monitor
+            </h2>
+
+            <!-- Visual steps -->
+            <div class="workflow-visual">
+                <div class="step" id="step-extract">
+                    <div class="step-icon">1</div>
+                    Extraction
+                </div>
+                <div class="arrow">➔</div>
+                <div class="step" id="step-build">
+                    <div class="step-icon">2</div>
+                    Mapping
+                </div>
+                <div class="arrow">➔</div>
+                <div class="step" id="step-validate">
+                    <div class="step-icon">3</div>
+                    Validation
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('tab-graph')">RDF Graph (Turtle)</button>
+                <button class="tab-btn" onclick="switchTab('tab-extractions')">Extracted Triples</button>
+                <button class="tab-btn" onclick="switchTab('tab-validation')">Validation Report</button>
+            </div>
+
+            <!-- Tab 1: RDF Graph -->
+            <div class="tab-content active" id="tab-graph">
+                <div id="graph-placeholder" class="placeholder-text">Run the pipeline to generate the RDF Turtle graph...</div>
+                <div id="graph-result" style="display: none;">
+                    <div class="code-container">
+                        <button class="copy-btn button" onclick="copyCode()">Copy</button>
+                        <pre><code id="turtle-code"></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Extractions -->
+            <div class="tab-content" id="tab-extractions">
+                <div id="extractions-placeholder" class="placeholder-text">Run the pipeline to view extracted entities and relations...</div>
+                <div id="extractions-result" style="display: none;">
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Extracted Entities</h3>
+                    <div class="entities-list" id="entities-container"></div>
+                    
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Extracted Relations</h3>
+                    <div class="relations-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Predicate</th>
+                                    <th>Object</th>
+                                </tr>
+                            </thead>
+                            <tbody id="relations-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Validation -->
+            <div class="tab-content" id="tab-validation">
+                <div id="validation-placeholder" class="placeholder-text">Run the pipeline to run the syntax and prefix validation...</div>
+                <div id="validation-result" style="display: none;">
+                    <div class="validation-badge valid" id="valid-badge" style="display: none;">
+                        ✓ RDF Schema Validated
+                    </div>
+                    <div class="validation-badge invalid" id="invalid-badge" style="display: none;">
+                        ✗ Validation Issues Found
+                    </div>
+                    <div id="issues-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function useSample(button) {
+            document.getElementById('text-input').value = button.innerText;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Find clicked tab button
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById('turtle-code').innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                copyBtn.innerText = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.innerText = 'Copy';
+                }, 2000);
+            });
+        }
+
+        async function runWorkflow() {
+            const text = document.getElementById('text-input').value.trim();
+            if (!text) {
+                alert('Please enter some text first.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="spinner"></div>';
+
+            // Reset states
+            resetSteps();
+            hideResults();
+
+            // Step 1 active (Extracting)
+            setStepActive('step-extract');
+
+            try {
+                const response = await fetch('/agents/extract', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Pipeline request failed: ' + response.statusText);
+                }
+
+                const result = await response.json();
+
+                // Step 1 success, Step 2 success (Builder maps programmatically right after)
+                setStepSuccess('step-extract');
+                setStepActive('step-build');
+                
+                setTimeout(() => {
+                    setStepSuccess('step-build');
+                    setStepActive('step-validate');
+                    
+                    setTimeout(() => {
+                        setStepSuccess('step-validate');
+                        displayResults(result);
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Run Agent Pipeline';
+                    }, 500);
+                }, 500);
+
+            } catch (err) {
+                alert('Error running pipeline: ' + err.message);
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Run Agent Pipeline';
+                resetSteps();
+            }
+        }
+
+        function resetSteps() {
+            document.querySelectorAll('.step').forEach(step => {
+                step.className = 'step';
+            });
+        }
+
+        function setStepActive(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function setStepSuccess(id) {
+            document.getElementById(id).classList.remove('active');
+            document.getElementById(id).classList.add('active', 'success');
+        }
+
+        function hideResults() {
+            // Hide result containers
+            document.getElementById('graph-result').style.display = 'none';
+            document.getElementById('extractions-result').style.display = 'none';
+            document.getElementById('validation-result').style.display = 'none';
+
+            // Show placeholders
+            document.getElementById('graph-placeholder').style.display = 'block';
+            document.getElementById('extractions-placeholder').style.display = 'block';
+            document.getElementById('validation-placeholder').style.display = 'block';
+        }
+
+        function displayResults(data) {
+            // Hide placeholders
+            document.getElementById('graph-placeholder').style.display = 'none';
+            document.getElementById('extractions-placeholder').style.display = 'none';
+            document.getElementById('validation-placeholder').style.display = 'none';
+
+            // 1. Display Turtle Graph
+            document.getElementById('turtle-code').innerText = data.turtle;
+            document.getElementById('graph-result').style.display = 'block';
+
+            // 2. Display Extractions (Entities)
+            const entitiesContainer = document.getElementById('entities-container');
+            entitiesContainer.innerHTML = '';
+            data.extraction.entities.forEach(ent => {
+                const card = document.createElement('div');
+                card.className = 'entity-card';
+                card.innerHTML = `<span class="entity-label">${ent.label}</span><span class="entity-type">${ent.type}</span>`;
+                entitiesContainer.appendChild(card);
+            });
+
+            // Display Extractions (Relations)
+            const tbody = document.getElementById('relations-tbody');
+            tbody.innerHTML = '';
+            data.extraction.relations.forEach(rel => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${rel.subject}</td><td>${rel.predicate}</td><td>${rel.object}</td>`;
+                tbody.appendChild(tr);
+            });
+            document.getElementById('extractions-result').style.display = 'block';
+
+            // 3. Display Validation Results
+            const validBadge = document.getElementById('valid-badge');
+            const invalidBadge = document.getElementById('invalid-badge');
+            const issuesList = document.getElementById('issues-list');
+            issuesList.innerHTML = '';
+
+            if (data.validation.is_valid) {
+                validBadge.style.display = 'inline-flex';
+                invalidBadge.style.display = 'none';
+            } else {
+                validBadge.style.display = 'none';
+                invalidBadge.style.display = 'inline-flex';
+                
+                data.validation.issues.forEach(issue => {
+                    const card = document.createElement('div');
+                    card.className = 'issue-card';
+                    card.innerHTML = `<div class="issue-title">[${issue.severity.toUpperCase()}] ${issue.rule}</div><div>${issue.message}</div><div style="font-family: monospace; font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Triple: ${issue.triple}</div>`;
+                    issuesList.appendChild(card);
+                });
+            }
+            document.getElementById('validation-result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
