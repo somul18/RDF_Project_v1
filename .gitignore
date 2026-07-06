@@ -17,3 +17,4 @@ venv/
 # ADK runtime artifacts
 .adk/
 *.db
+.google-agents-cli/*.log
