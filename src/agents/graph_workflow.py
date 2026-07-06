@@ -6,7 +6,8 @@ from typing import Dict, Any, List
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from agents.extractor_agent import EntityExtractorAgent, RelationExtractorAgent
-from agents.rdf_builder_agent import RDFBuilderAgent, GraphToolbox
+from agents.rdf_builder_agent import RDFBuilderAgent
+from tools.graph_tools import GraphToolbox
 from agents.validator_agent import ValidatorAgent
 from agents.critic_agent import CriticAgent, CriticReport
 
