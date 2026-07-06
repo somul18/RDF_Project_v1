@@ -1,0 +1,381 @@
+Installed 6 packages in 11ms
+2026-07-06 14:34:12,510 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:34:12,510 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:34:12,510 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88814]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53836 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:34:12,909 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/app/.adk/session.db
+2026-07-06 14:34:12,915 - INFO - api_server.py:860 - New session created: 653b9622-9860-4a67-b2ba-09192ace841a
+INFO:     127.0.0.1:53837 - "POST /apps/app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:34:12,919 - INFO - envs.py:83 - Loaded .env file for app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:12,919 - INFO - envs.py:83 - Loaded .env file for app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+INFO:     127.0.0.1:53838 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:34:12,947 - ERROR - api_server.py:1601 - Error in event_generator: No module named 'app.models'
+Traceback (most recent call last):
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/api_server.py", line 1573, in event_generator
+    async for event in agen:
+    ...<25 lines>...
+        yield f"data: {sse_event}\n\n"
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1133, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1116, in _run_with_trace
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1378, in _exec_with_plugin
+    async for event in agen:
+    ...<29 lines>...
+      yield output_event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1105, in execute
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/agents/base_agent.py", line 305, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/app/agent.py", line 27, in _run_async_impl
+    from agents.graph_workflow import RDFGraphWorkflow
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/src/agents/graph_workflow.py", line 9, in <module>
+    from agents.rdf_builder_agent import RDFBuilderAgent
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/src/agents/rdf_builder_agent.py", line 7, in <module>
+    from tools.graph_tools import GraphToolbox
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/src/tools/graph_tools.py", line 2, in <module>
+    from app.models.rdf import RDFGraph
+ModuleNotFoundError: No module named 'app.models'
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:34:13,127 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:34:13,127 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88814]
+2026-07-06 14:34:16,088 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:34:16,088 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:34:16,088 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88833]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53844 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:34:16,390 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/app/.adk/session.db
+2026-07-06 14:34:16,393 - INFO - api_server.py:860 - New session created: 5c69bff9-4831-4f19-8a4e-8f9d48964912
+INFO:     127.0.0.1:53845 - "POST /apps/app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:34:16,397 - INFO - envs.py:83 - Loaded .env file for app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:16,398 - INFO - envs.py:83 - Loaded .env file for app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+INFO:     127.0.0.1:53846 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:34:16,411 - ERROR - api_server.py:1601 - Error in event_generator: No module named 'app.models'
+Traceback (most recent call last):
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/api_server.py", line 1573, in event_generator
+    async for event in agen:
+    ...<25 lines>...
+        yield f"data: {sse_event}\n\n"
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1133, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1116, in _run_with_trace
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1378, in _exec_with_plugin
+    async for event in agen:
+    ...<29 lines>...
+      yield output_event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1105, in execute
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/agents/base_agent.py", line 305, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/app/agent.py", line 27, in _run_async_impl
+    from agents.graph_workflow import RDFGraphWorkflow
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/src/agents/graph_workflow.py", line 9, in <module>
+    from agents.rdf_builder_agent import RDFBuilderAgent
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/src/agents/rdf_builder_agent.py", line 7, in <module>
+    from tools.graph_tools import GraphToolbox
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/src/tools/graph_tools.py", line 2, in <module>
+    from app.models.rdf import RDFGraph
+ModuleNotFoundError: No module named 'app.models'
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:34:16,544 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:34:16,544 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88833]
+2026-07-06 14:34:33,993 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:34:33,993 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:34:33,993 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88856]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53852 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:34:34,302 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/.adk/session.db
+2026-07-06 14:34:34,307 - INFO - api_server.py:860 - New session created: ab1fc46d-6afe-4335-84f4-3eac1ccee7b6
+INFO:     127.0.0.1:53853 - "POST /apps/adk_app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:34:34,312 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:34,312 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:34,315 - WARNING - runners.py:395 - App name mismatch detected. The runner is configured with app name "app", but the root agent was loaded from "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app", which implies app name "adk_app".
+INFO:     127.0.0.1:53854 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:34:34,320 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/app/.adk/session.db
+2026-07-06 14:34:34,323 - ERROR - api_server.py:1601 - Error in event_generator: Session not found: ab1fc46d-6afe-4335-84f4-3eac1ccee7b6. The runner is configured with app name "app", but the root agent was loaded from "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app", which implies app name "adk_app". Ensure the runner app_name matches that directory or pass app_name explicitly when constructing the runner. The mismatch prevents the runner from locating the session. To automatically create a session when missing, set auto_create_session=True when constructing the runner.
+Traceback (most recent call last):
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/api_server.py", line 1573, in event_generator
+    async for event in agen:
+    ...<25 lines>...
+        yield f"data: {sse_event}\n\n"
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1133, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1046, in _run_with_trace
+    session = await self._get_or_create_session(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 861, in _get_or_create_session
+    raise SessionNotFoundError(message)
+google.adk.errors.session_not_found_error.SessionNotFoundError: Session not found: ab1fc46d-6afe-4335-84f4-3eac1ccee7b6. The runner is configured with app name "app", but the root agent was loaded from "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app", which implies app name "adk_app". Ensure the runner app_name matches that directory or pass app_name explicitly when constructing the runner. The mismatch prevents the runner from locating the session. To automatically create a session when missing, set auto_create_session=True when constructing the runner.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:34:34,446 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:34:34,446 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88856]
+2026-07-06 14:34:36,769 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:34:36,770 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:34:36,770 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88867]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53860 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:34:37,069 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/.adk/session.db
+2026-07-06 14:34:37,073 - INFO - api_server.py:860 - New session created: 979c773b-c5af-43a1-9b4d-4dbba5616b7f
+INFO:     127.0.0.1:53861 - "POST /apps/adk_app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:34:37,077 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:37,078 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:37,080 - WARNING - runners.py:395 - App name mismatch detected. The runner is configured with app name "app", but the root agent was loaded from "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app", which implies app name "adk_app".
+INFO:     127.0.0.1:53862 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:34:37,085 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/app/.adk/session.db
+2026-07-06 14:34:37,087 - ERROR - api_server.py:1601 - Error in event_generator: Session not found: 979c773b-c5af-43a1-9b4d-4dbba5616b7f. The runner is configured with app name "app", but the root agent was loaded from "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app", which implies app name "adk_app". Ensure the runner app_name matches that directory or pass app_name explicitly when constructing the runner. The mismatch prevents the runner from locating the session. To automatically create a session when missing, set auto_create_session=True when constructing the runner.
+Traceback (most recent call last):
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/api_server.py", line 1573, in event_generator
+    async for event in agen:
+    ...<25 lines>...
+        yield f"data: {sse_event}\n\n"
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1133, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1046, in _run_with_trace
+    session = await self._get_or_create_session(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 861, in _get_or_create_session
+    raise SessionNotFoundError(message)
+google.adk.errors.session_not_found_error.SessionNotFoundError: Session not found: 979c773b-c5af-43a1-9b4d-4dbba5616b7f. The runner is configured with app name "app", but the root agent was loaded from "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app", which implies app name "adk_app". Ensure the runner app_name matches that directory or pass app_name explicitly when constructing the runner. The mismatch prevents the runner from locating the session. To automatically create a session when missing, set auto_create_session=True when constructing the runner.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:34:37,225 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:34:37,226 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88867]
+2026-07-06 14:34:42,779 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:34:42,779 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:34:42,779 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88880]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53868 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:34:43,092 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/.adk/session.db
+2026-07-06 14:34:43,095 - INFO - api_server.py:860 - New session created: a1841386-8292-4932-ae96-81e187afb069
+INFO:     127.0.0.1:53869 - "POST /apps/adk_app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:34:43,099 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:43,100 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+INFO:     127.0.0.1:53870 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:34:43,276 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:34:45,465 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:45,468 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:34:48,379 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:48,382 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:34:49,663 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:49,665 - INFO - models.py:6545 - AFC remote call 1 is done.
+2026-07-06 14:34:50,797 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:50,799 - INFO - models.py:6545 - AFC remote call 2 is done.
+2026-07-06 14:34:51,642 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:51,645 - INFO - models.py:6545 - AFC remote call 3 is done.
+2026-07-06 14:34:52,883 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:52,886 - INFO - models.py:6545 - AFC remote call 4 is done.
+2026-07-06 14:34:53,708 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:34:53,725 - ERROR - api_server.py:1601 - Error in event_generator: 1 validation error for Event
+content
+  Input should be a valid dictionary or object to extract fields from [type=model_attributes_type, input_value="Error executing RDF pipe...o module named 'rdflib'", input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/model_attributes_type
+Traceback (most recent call last):
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/api_server.py", line 1573, in event_generator
+    async for event in agen:
+    ...<25 lines>...
+        yield f"data: {sse_event}\n\n"
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1133, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1116, in _run_with_trace
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1378, in _exec_with_plugin
+    async for event in agen:
+    ...<29 lines>...
+      yield output_event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1105, in execute
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/agents/base_agent.py", line 305, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/agent.py", line 46, in _run_async_impl
+    yield Event(author=self.name, content=f"Error executing RDF pipeline: {e}")
+          ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Event
+content
+  Input should be a valid dictionary or object to extract fields from [type=model_attributes_type, input_value="Error executing RDF pipe...o module named 'rdflib'", input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/model_attributes_type
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:34:53,839 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:34:53,839 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88880]
+2026-07-06 14:34:57,914 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:34:57,914 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:34:57,914 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88911]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53883 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:34:58,116 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/.adk/session.db
+2026-07-06 14:34:58,119 - INFO - api_server.py:860 - New session created: 3e9b5e05-4000-4c79-920d-2504417852c2
+INFO:     127.0.0.1:53884 - "POST /apps/adk_app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:34:58,122 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:34:58,123 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+INFO:     127.0.0.1:53885 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:34:58,252 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:35:01,390 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:01,394 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:35:04,563 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:04,565 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:35:05,889 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:05,891 - INFO - models.py:6545 - AFC remote call 1 is done.
+2026-07-06 14:35:06,846 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:06,848 - INFO - models.py:6545 - AFC remote call 2 is done.
+2026-07-06 14:35:07,444 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:07,446 - INFO - models.py:6545 - AFC remote call 3 is done.
+2026-07-06 14:35:08,148 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:08,150 - INFO - models.py:6545 - AFC remote call 4 is done.
+2026-07-06 14:35:08,591 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:08,599 - ERROR - api_server.py:1601 - Error in event_generator: 1 validation error for Event
+content
+  Input should be a valid dictionary or object to extract fields from [type=model_attributes_type, input_value="Error executing RDF pipe...o module named 'rdflib'", input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/model_attributes_type
+Traceback (most recent call last):
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/api_server.py", line 1573, in event_generator
+    async for event in agen:
+    ...<25 lines>...
+        yield f"data: {sse_event}\n\n"
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1133, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1116, in _run_with_trace
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1378, in _exec_with_plugin
+    async for event in agen:
+    ...<29 lines>...
+      yield output_event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/runners.py", line 1105, in execute
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/agents/base_agent.py", line 305, in run_async
+    async for event in agen:
+      yield event
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/agent.py", line 46, in _run_async_impl
+    yield Event(author=self.name, content=f"Error executing RDF pipeline: {e}")
+          ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Event
+content
+  Input should be a valid dictionary or object to extract fields from [type=model_attributes_type, input_value="Error executing RDF pipe...o module named 'rdflib'", input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/model_attributes_type
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:35:08,718 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:35:08,718 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88911]
+2026-07-06 14:35:29,542 - INFO - service_factory.py:266 - Using in-memory memory service
+2026-07-06 14:35:29,542 - INFO - local_storage.py:88 - Using per-agent session storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+2026-07-06 14:35:29,542 - INFO - local_storage.py:120 - Using per-agent artifact storage rooted at /Users/johnpunin/jpunin/Programming/RDF_Project_v1
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/cli/fast_api.py:553: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.venv/lib/python3.13/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [88948]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:18080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53899 - "GET / HTTP/1.1" 404 Not Found
+2026-07-06 14:35:29,744 - INFO - local_storage.py:64 - Creating local session service at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/adk_app/.adk/session.db
+2026-07-06 14:35:29,752 - INFO - api_server.py:860 - New session created: b9f32b63-4c3e-472f-95a8-deb3720ad5d2
+INFO:     127.0.0.1:53900 - "POST /apps/adk_app/users/cli-user/sessions HTTP/1.1" 200 OK
+2026-07-06 14:35:29,755 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+2026-07-06 14:35:29,755 - INFO - envs.py:83 - Loaded .env file for adk_app at /Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env
+INFO:     127.0.0.1:53901 - "POST /run_sse HTTP/1.1" 200 OK
+2026-07-06 14:35:29,884 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:35:31,638 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:31,641 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:35:33,332 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:33,334 - INFO - models.py:6510 - AFC is enabled with max remote calls: 10.
+2026-07-06 14:35:34,435 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:34,438 - INFO - models.py:6545 - AFC remote call 1 is done.
+2026-07-06 14:35:35,531 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:35,533 - INFO - models.py:6545 - AFC remote call 2 is done.
+2026-07-06 14:35:36,634 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:36,636 - INFO - models.py:6545 - AFC remote call 3 is done.
+2026-07-06 14:35:37,938 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-06 14:35:37,941 - INFO - models.py:6545 - AFC remote call 4 is done.
+2026-07-06 14:35:39,063 - INFO - _client.py:1025 - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-07-06 14:35:39,271 - INFO - runners.py:2115 - Closing runner...
+2026-07-06 14:35:39,271 - INFO - runners.py:2128 - Runner closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [88948]
