@@ -13,3 +13,7 @@ __pycache__/
 .venv/
 env/
 venv/
+
+# ADK runtime artifacts
+.adk/
+*.db

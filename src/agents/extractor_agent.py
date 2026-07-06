@@ -1,10 +1,12 @@
+import os
 from typing import List, Union
 from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
-load_dotenv('/Users/johnpunin/jpunin/Programming/RDF_Project_v1/.env')
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+load_dotenv(os.path.join(_PROJECT_ROOT, '.env'))
 
 
 class ExtractedEntity(BaseModel):
