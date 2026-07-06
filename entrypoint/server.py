@@ -1,4 +1,5 @@
 import io
+import threading
 from typing import Optional, List, Dict, Union
 from fastapi import FastAPI, HTTPException, Query, status, Body
 from fastapi.responses import PlainTextResponse, HTMLResponse
@@ -28,8 +29,14 @@ app = FastAPI(
     version="3.0.0"
 )
 
-# Global in-memory dataset using RDFLib
+# Global in-memory dataset using RDFLib.
+# FastAPI runs sync endpoint functions in a thread pool, so concurrent requests
+# can genuinely run in parallel threads. This lock serializes access to
+# global_dataset so concurrent reads/writes can't interleave and corrupt it.
+# Note: the dataset itself is still shared process-wide across all clients
+# (no per-user/session isolation) - fine for a single-user local demo only.
 global_dataset = rdflib.Dataset()
+_dataset_lock = threading.Lock()
 
 
 # Convert RDFLib Dataset to custom Dataset representation for isomorphism checks
@@ -116,7 +123,8 @@ class IsomorphicDatasetsRequest(BaseModel):
 def clear_dataset():
     """Clear all quads from the global in-memory dataset."""
     global global_dataset
-    global_dataset = rdflib.Dataset()
+    with _dataset_lock:
+        global_dataset = rdflib.Dataset()
     return {"status": "success", "message": "In-memory dataset cleared"}
 
 
@@ -139,10 +147,11 @@ def parse_rdf(req: ParseRequest):
                     
             # Add to global dataset
             ctx_uri = target_g_uri if target_g_uri is not None else rdflib.URIRef("urn:x-rdflib:default")
-            ctx = global_dataset.get_context(ctx_uri)
-            for t in g:
-                ctx.add(t)
-                
+            with _dataset_lock:
+                ctx = global_dataset.get_context(ctx_uri)
+                for t in g:
+                    ctx.add(t)
+
             return RDFGraphService().from_rdflib_graph(g)
         except Exception as e:
             raise HTTPException(
@@ -156,9 +165,10 @@ def parse_rdf(req: ParseRequest):
             d.parse(data=req.content, format="nquads")
             
             # Add to global dataset
-            for q in d.quads((None, None, None, None)):
-                global_dataset.add(q)
-                
+            with _dataset_lock:
+                for q in d.quads((None, None, None, None)):
+                    global_dataset.add(q)
+
             return RDFDatasetService().from_rdflib_dataset(d)
         except Exception as e:
             raise HTTPException(
@@ -202,8 +212,9 @@ def get_quads(
         g_ref = None if match_all_graphs else rdflib.URIRef("urn:x-rdflib:default")
         
     dataset = RDFDataset()
-    raw_quads = list(global_dataset.quads((s_ref, p_ref, o_ref, g_ref)))
-    
+    with _dataset_lock:
+        raw_quads = list(global_dataset.quads((s_ref, p_ref, o_ref, g_ref)))
+
     # Filter by context manually to handle RDFLib default/union graph behavior
     if g_ref is not None:
         raw_quads = [q for q in raw_quads if q[3] == g_ref]
@@ -230,7 +241,8 @@ def add_quad(quad: RDFQuad):
     try:
         s, p, o, g = to_rdflib_quad(quad)
         g_ref = g if g is not None else rdflib.URIRef("urn:x-rdflib:default")
-        global_dataset.add((s, p, o, g_ref))
+        with _dataset_lock:
+            global_dataset.add((s, p, o, g_ref))
         return {"status": "success", "quad": quad}
     except Exception as e:
         raise HTTPException(
@@ -268,11 +280,12 @@ def delete_quads(
     else:
         g_ref = None if match_all_graphs else rdflib.URIRef("urn:x-rdflib:default")
         
-    # Find matching quads first
-    matching = list(global_dataset.quads((s_ref, p_ref, o_ref, g_ref)))
-    for q in matching:
-        global_dataset.remove(q)
-        
+    # Find matching quads first (locked so the find-then-remove is atomic)
+    with _dataset_lock:
+        matching = list(global_dataset.quads((s_ref, p_ref, o_ref, g_ref)))
+        for q in matching:
+            global_dataset.remove(q)
+
     return {"status": "success", "quads_removed": len(matching)}
 
 
@@ -287,13 +300,15 @@ def serialize_rdf(
         if fmt == "ntriples":
             g_term = parse_query_term(graph) if graph is not None else None
             g_ref = to_rdflib_node(g_term) if g_term else rdflib.URIRef("urn:x-rdflib:default")
-            ctx = global_dataset.get_context(g_ref)
-            res_bytes = ctx.serialize(format="nt")
+            with _dataset_lock:
+                ctx = global_dataset.get_context(g_ref)
+                res_bytes = ctx.serialize(format="nt")
             return res_bytes.decode("utf-8") if isinstance(res_bytes, bytes) else res_bytes
         elif fmt == "nquads":
             if graph is not None:
                 raise ValueError("Graph option is not supported for N-Quads format")
-            res_bytes = global_dataset.serialize(format="nquads")
+            with _dataset_lock:
+                res_bytes = global_dataset.serialize(format="nquads")
             return res_bytes.decode("utf-8") if isinstance(res_bytes, bytes) else res_bytes
         else:
             raise ValueError("Format must be 'ntriples' or 'nquads'")
