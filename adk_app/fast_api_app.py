@@ -74,7 +74,7 @@ app: FastAPI = get_fast_api_app(
     lifespan=lifespan,
 )
 app.title = "rdf-project-v1"
-app.description = "API for interacting with the Agent rdf-project-v1"
+app.description = "API for interacting with the Agent adk_app"
 
 
 @app.post("/feedback")
