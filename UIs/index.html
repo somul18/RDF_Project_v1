@@ -529,6 +529,7 @@
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('tab-graph')">RDF Graph (Turtle)</button>
                 <button class="tab-btn" onclick="switchTab('tab-extractions')">Extracted Triples</button>
+                <button class="tab-btn" onclick="switchTab('tab-toolbox')">Toolbox Logs</button>
                 <button class="tab-btn" onclick="switchTab('tab-validation')">Validation Report</button>
             </div>
 
@@ -566,7 +567,18 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Validation -->
+            <!-- Tab 3: Toolbox Logs -->
+            <div class="tab-content" id="tab-toolbox">
+                <div id="toolbox-placeholder" class="placeholder-text">Run the pipeline to view backend tool calls...</div>
+                <div id="toolbox-result" style="display: none;">
+                    <div class="relations-table-container" style="border: none; background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 8px;">
+                        <ul id="toolbox-logs-list" style="list-style: none; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.6; color: #34d399; display: flex; flex-direction: column; gap: 0.5rem;">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Validation -->
             <div class="tab-content" id="tab-validation">
                 <div id="validation-placeholder" class="placeholder-text">Run the pipeline to run the syntax and prefix validation...</div>
                 <div id="validation-result" style="display: none;">
@@ -687,11 +699,13 @@
             // Hide result containers
             document.getElementById('graph-result').style.display = 'none';
             document.getElementById('extractions-result').style.display = 'none';
+            document.getElementById('toolbox-result').style.display = 'none';
             document.getElementById('validation-result').style.display = 'none';
 
             // Show placeholders
             document.getElementById('graph-placeholder').style.display = 'block';
             document.getElementById('extractions-placeholder').style.display = 'block';
+            document.getElementById('toolbox-placeholder').style.display = 'block';
             document.getElementById('validation-placeholder').style.display = 'block';
         }
 
@@ -699,6 +713,7 @@
             // Hide placeholders
             document.getElementById('graph-placeholder').style.display = 'none';
             document.getElementById('extractions-placeholder').style.display = 'none';
+            document.getElementById('toolbox-placeholder').style.display = 'none';
             document.getElementById('validation-placeholder').style.display = 'none';
 
             // 1. Display Turtle Graph
@@ -725,7 +740,17 @@
             });
             document.getElementById('extractions-result').style.display = 'block';
 
-            // 3. Display Validation Results
+            // 3. Display Toolbox Logs
+            const logsList = document.getElementById('toolbox-logs-list');
+            logsList.innerHTML = '';
+            data.execution_log.forEach(log => {
+                const li = document.createElement('li');
+                li.innerText = `🛠️ ${log}`;
+                logsList.appendChild(li);
+            });
+            document.getElementById('toolbox-result').style.display = 'block';
+
+            // 4. Display Validation Results
             const validBadge = document.getElementById('valid-badge');
             const invalidBadge = document.getElementById('invalid-badge');
             const issuesList = document.getElementById('issues-list');

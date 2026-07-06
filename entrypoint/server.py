@@ -369,12 +369,13 @@ def run_agent_workflow(req: AgentWorkflowRequest):
     """Run the multi-agent pipeline to extract, map, and validate RDF graphs from text."""
     try:
         from agents.graph_workflow import RDFGraphWorkflow
-        from agents.extractor_agent import ExtractorAgent
+        from agents.extractor_agent import EntityExtractorAgent, RelationExtractorAgent
         from agents.rdf_builder_agent import RDFBuilderAgent
         from agents.validator_agent import ValidatorAgent
         
         workflow = RDFGraphWorkflow(
-            ExtractorAgent(),
+            EntityExtractorAgent(),
+            RelationExtractorAgent(),
             RDFBuilderAgent(),
             ValidatorAgent()
         )

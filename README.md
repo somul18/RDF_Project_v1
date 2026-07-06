@@ -73,22 +73,33 @@ PYTHONPATH=src:. uvicorn entrypoint.server:app --reload --port 8000
 Then navigate to **[http://localhost:8000/](http://localhost:8000/)** in your web browser.
 
 ### 4. Running Tests
-Run the comprehensive test suite (33 passing tests) in verbose mode:
+Run the comprehensive test suite (34 passing tests) in verbose mode:
 ```bash
 PYTHONPATH=src:. pytest -v tests/
 ```
 
 ---
 
-## 🤖 Multi-Agent Workflow
+## 🤖 Multi-Agent Tool-Use Workflow
 
 ```mermaid
 graph TD
-    A[Unstructured Input Text] --> B[Extractor Agent]
-    B -->|Structured Entities & Relations| C[RDF Builder Agent]
-    C -->|Schema / FOAF Ontology Mapping| D[Validator Agent]
-    D -->|Rule-Based Verification| E[Final RDF Graph / Turtle]
+    A[Unstructured Input Text] --> B[Root Agent]
+    B -->|1. Extract Entities| C[Entity Extractor Agent]
+    B -->|2. Extract Relations| D[Relation Extractor Agent]
+    B -->|3. Build Graph via Tool Calls| E[RDF Builder Agent]
+    E -->|Calls Tools| F[(Graph Toolbox)]
+    B -->|4. Run Syntactic Validation| G[Validator Agent]
+    G -->|Returns Report| H[Final Verified RDF Graph / Turtle]
 ```
+
+### Exposing the Backend as Tools
+Agents do not directly manipulate the graph. Instead, they interact with the Python backend via the **Graph Toolbox**, which exposes the following operations as local Python functions/tools:
+*   `create_graph(graph_id)`
+*   `bind_namespace(graph_id, prefix, uri)`
+*   `add_type(graph_id, subject, type_node)`
+*   `add_literal(graph_id, subject, predicate, value, datatype, language)`
+*   `add_triple(graph_id, subject, predicate, object_val)`
 
 ### Flow Example:
 *   **Input Text**: *"Marie Curie was born in Warsaw in 1867."*

@@ -182,3 +182,16 @@ def test_isomorphism_endpoints():
     res_d = client.post("/isomorphic/datasets", json=req_d)
     assert res_d.status_code == 200
     assert res_d.json()["isomorphic"] is True
+
+
+def test_agent_extract_endpoint():
+    res = client.post("/agents/extract", json={"text": "Marie Curie was born in Warsaw in 1867."})
+    assert res.status_code == 200
+    data = res.json()
+    assert "extraction" in data
+    assert "entities" in data["extraction"]
+    assert "relations" in data["extraction"]
+    assert "execution_log" in data
+    assert "turtle" in data
+    assert len(data["extraction"]["entities"]) > 0
+    assert len(data["execution_log"]) > 0
