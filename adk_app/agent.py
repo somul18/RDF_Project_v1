@@ -1,3 +1,4 @@
+# ADK Agent Entrypoint for Multi-Agent RDF Pipeline
 import sys
 import os
 from typing import AsyncGenerator
